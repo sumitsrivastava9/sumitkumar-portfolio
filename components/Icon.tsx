@@ -52,6 +52,25 @@ const paths: Record<string, React.ReactNode> = {
     </>
   ),
   "chevron-down": <path d="m6 9 6 6 6-6" />,
+  "arrow-up-right": (
+    <>
+      <path d="M7 17 17 7" />
+      <path d="M8 7h9v9" />
+    </>
+  ),
+  "arrow-left": (
+    <>
+      <path d="M19 12H5" />
+      <path d="m12 19-7-7 7-7" />
+    </>
+  ),
+  copy: (
+    <>
+      <rect x="9" y="9" width="11" height="11" rx="2" />
+      <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+    </>
+  ),
+  check: <path d="m5 13 4 4L19 7" />,
 };
 
 export default function Icon({ name, size = 20, className = "", style }: IconProps) {

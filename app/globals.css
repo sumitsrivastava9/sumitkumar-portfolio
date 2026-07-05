@@ -4,8 +4,10 @@
 
 :root {
   color-scheme: dark;
-  --font-display: "Space Grotesk", system-ui, sans-serif;
-  --font-body: "Inter", system-ui, sans-serif;
+  /* Font variables (--font-display / --font-body) are injected on <html>
+     by next/font in app/layout.tsx. */
+  /* Per-profile accent; pages override this inline on <main>. */
+  --accent: #d85a30;
 }
 
 html,
@@ -39,9 +41,9 @@ a {
   }
 }
 
-/* Visible keyboard focus everywhere */
+/* Visible keyboard focus everywhere, tinted to the active profile */
 :focus-visible {
-  outline: 2px solid #D85A30;
+  outline: 2px solid var(--accent, #d85a30);
   outline-offset: 3px;
   border-radius: 6px;
 }

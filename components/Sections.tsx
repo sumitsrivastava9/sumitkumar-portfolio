@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import {
   hero as heroData,
@@ -344,10 +345,18 @@ export function FlagshipProject({ accent }: { accent: string }) {
         </h2>
         <p className="text-sm text-white/55 mb-5">{f.subtitle}</p>
 
-        {/* Video slot */}
+        {/* Video slot. preload="metadata" + poster keep the multi-MB file
+            off the wire until the visitor actually presses play. */}
         <div className="relative aspect-video rounded-xl overflow-hidden bg-ink-soft border border-white/[0.08] flex items-center justify-center mb-3">
           {f.video.src ? (
-            <video src={f.video.src} controls className="w-full h-full object-cover" />
+            <video
+              src={f.video.src}
+              poster={f.video.poster}
+              controls
+              preload="metadata"
+              playsInline
+              className="w-full h-full object-cover"
+            />
           ) : (
             <div className="relative text-center">
               <div
@@ -374,12 +383,22 @@ export function FlagshipProject({ accent }: { accent: string }) {
           <Cell label="Impact" accent={accent} highlight text={f.framework.impact} />
         </div>
 
-        <div className="flex gap-2 mt-6 flex-wrap">
-          {f.tags.map((t) => (
-            <span key={t} className="text-[11px] text-white/60 bg-white/5 px-2.5 py-1 rounded-md">
-              {t}
-            </span>
-          ))}
+        <div className="flex items-center justify-between gap-4 flex-wrap mt-6">
+          <div className="flex gap-2 flex-wrap">
+            {f.tags.map((t) => (
+              <span key={t} className="text-[11px] text-white/60 bg-white/5 px-2.5 py-1 rounded-md">
+                {t}
+              </span>
+            ))}
+          </div>
+          <Link
+            href="/work/pulse"
+            className="inline-flex items-center gap-2 text-[13px] font-medium font-display px-5 py-2.5 rounded-full text-white shrink-0"
+            style={{ background: accent }}
+          >
+            Read the full case study
+            <Icon name="arrow-up-right" size={14} />
+          </Link>
         </div>
       </div>
       </section>
@@ -414,20 +433,30 @@ function Cell({
   );
 }
 
-export function MoreWork() {
+export function MoreWork({ accent }: { accent: string }) {
   return (
     <Container>
       <section className="pb-12">
       <SectionLabel>more work</SectionLabel>
       <div className="border-t border-white/[0.07]">
         {moreWork.map((m) => (
-          <div
-            key={m.title}
-            className="flex justify-between items-center py-4 border-b border-white/[0.07]"
+          <Link
+            key={m.slug}
+            href={`/work/${m.slug}`}
+            className="group flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-4 py-4 border-b border-white/[0.07]"
           >
             <span className="font-display text-lg text-white font-medium">{m.title}</span>
-            <span className="text-[13px] text-white/45">{m.descriptor}</span>
-          </div>
+            <span className="flex items-center gap-3 text-[13px] text-white/45">
+              {m.descriptor}
+              <span
+                className="inline-flex items-center gap-1 shrink-0 transition-transform group-hover:translate-x-0.5"
+                style={{ color: accent }}
+              >
+                case study
+                <Icon name="arrow-up-right" size={13} />
+              </span>
+            </span>
+          </Link>
         ))}
       </div>
       </section>
@@ -602,6 +631,35 @@ export function RecruiterCard({ accent }: { accent: string }) {
   );
 }
 
+// The mailto CTA silently fails on machines without a mail client, so
+// the address itself is shown and copyable as a fallback.
+function CopyEmail({ accent }: { accent: string }) {
+  const [copied, setCopied] = useState(false);
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      window.prompt("Copy my email:", profile.email);
+    }
+  }
+  return (
+    <button
+      onClick={copy}
+      className="mt-5 inline-flex items-center gap-2 text-[12px] text-white/45 hover:text-white/80 transition-colors bg-transparent border-0 cursor-pointer font-display"
+      aria-live="polite"
+    >
+      <Icon
+        name={copied ? "check" : "copy"}
+        size={13}
+        style={copied ? { color: accent } : undefined}
+      />
+      {copied ? "copied to clipboard" : profile.email}
+    </button>
+  );
+}
+
 export function Contact({ accent }: { accent: string }) {
   return (
     <Container>
@@ -625,6 +683,9 @@ export function Contact({ accent }: { accent: string }) {
           >
             LinkedIn
           </a>
+        </div>
+        <div>
+          <CopyEmail accent={accent} />
         </div>
       </div>
       </section>

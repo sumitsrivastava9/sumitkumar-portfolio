@@ -65,12 +65,12 @@ export default function Gate() {
       </motion.div>
 
       <motion.div
-        className="relative grid grid-cols-2 sm:grid-cols-4 gap-5 w-full max-w-[540px]"
+        className="relative grid grid-cols-3 gap-4 sm:gap-5 w-full max-w-[440px]"
         variants={container}
         initial="hidden"
         animate="show"
       >
-        {gateProfiles.map((p) => {
+        {gateProfiles.filter((p) => p.ready).map((p) => {
           const color = accents[p.key];
           const isHover = hovered === p.key;
           const dim = hovered !== null && !isHover;
@@ -108,9 +108,6 @@ export default function Gate() {
                 style={{ color: isHover ? "#fff" : "rgba(255,255,255,0.6)", transition: "color .2s" }}
               >
                 {p.label}
-                {!p.ready && (
-                  <span className="block text-[10px] text-white/30">coming soon</span>
-                )}
               </div>
             </motion.button>
           );

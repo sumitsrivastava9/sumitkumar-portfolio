@@ -53,19 +53,18 @@ export default function Nav({ current }: { current: ProfileKey }) {
 
         {open && (
           <div className="absolute right-0 mt-2 w-48 rounded-xl bg-ink-soft border border-white/10 p-1 z-20">
-            {gateProfiles.map((p) => (
-              <button
-                key={p.key}
-                onClick={() => switchTo(p.key)}
-                className="flex items-center gap-2.5 w-full text-left px-3 py-2 rounded-lg text-[13px] text-white/80 hover:bg-white/5 bg-transparent border-0 cursor-pointer"
-              >
-                <Icon name={p.icon} size={15} style={{ color: accents[p.key] }} />
-                {p.label}
-                {!p.ready && (
-                  <span className="ml-auto text-[10px] text-white/30">soon</span>
-                )}
-              </button>
-            ))}
+            {gateProfiles
+              .filter((p) => p.ready)
+              .map((p) => (
+                <button
+                  key={p.key}
+                  onClick={() => switchTo(p.key)}
+                  className="flex items-center gap-2.5 w-full text-left px-3 py-2 rounded-lg text-[13px] text-white/80 hover:bg-white/5 bg-transparent border-0 cursor-pointer"
+                >
+                  <Icon name={p.icon} size={15} style={{ color: accents[p.key] }} />
+                  {p.label}
+                </button>
+              ))}
           </div>
         )}
       </div>
