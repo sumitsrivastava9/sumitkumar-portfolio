@@ -10,6 +10,12 @@
   --accent: #d85a30;
 }
 
+html {
+  /* In-page anchors (e.g. "See the work") glide instead of jumping.
+     The reduced-motion block below reverts this to auto. */
+  scroll-behavior: smooth;
+}
+
 html,
 body {
   margin: 0;

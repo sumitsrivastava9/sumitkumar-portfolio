@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import { gateProfiles, accents, profile, ProfileKey } from "@/data/content";
 import Icon from "@/components/Icon";
 
@@ -51,22 +52,30 @@ export default function Nav({ current }: { current: ProfileKey }) {
           </button>
         </div>
 
-        {open && (
-          <div className="absolute right-0 mt-2 w-48 rounded-xl bg-ink-soft border border-white/10 p-1 z-20">
-            {gateProfiles
-              .filter((p) => p.ready)
-              .map((p) => (
-                <button
-                  key={p.key}
-                  onClick={() => switchTo(p.key)}
-                  className="flex items-center gap-2.5 w-full text-left px-3 py-2 rounded-lg text-[13px] text-white/80 hover:bg-white/5 bg-transparent border-0 cursor-pointer"
-                >
-                  <Icon name={p.icon} size={15} style={{ color: accents[p.key] }} />
-                  {p.label}
-                </button>
-              ))}
-          </div>
-        )}
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              className="absolute right-0 mt-2 w-48 rounded-xl bg-ink-soft border border-white/10 p-1 z-20 origin-top-right"
+              initial={{ opacity: 0, y: -6, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -4, scale: 0.97 }}
+              transition={{ duration: 0.16, ease: [0.2, 0.8, 0.2, 1] }}
+            >
+              {gateProfiles
+                .filter((p) => p.ready)
+                .map((p) => (
+                  <button
+                    key={p.key}
+                    onClick={() => switchTo(p.key)}
+                    className="flex items-center gap-2.5 w-full text-left px-3 py-2 rounded-lg text-[13px] text-white/80 hover:bg-white/5 bg-transparent border-0 cursor-pointer"
+                  >
+                    <Icon name={p.icon} size={15} style={{ color: accents[p.key] }} />
+                    {p.label}
+                  </button>
+                ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
       </div>
     </nav>

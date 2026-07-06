@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { motion, useScroll } from "framer-motion";
 import type { CaseStudy } from "@/data/caseStudies";
 import { caseStudies } from "@/data/caseStudies";
 import { profile } from "@/data/content";
@@ -53,12 +54,20 @@ export default function CaseStudyPage({ study }: { study: CaseStudy }) {
   const accent = study.accent;
   const idx = caseStudies.findIndex((s) => s.slug === study.slug);
   const next = caseStudies[(idx + 1) % caseStudies.length];
+  // Reading progress. Scroll-linked (not autonomous), so it tracks the
+  // user's own movement and stays acceptable under reduced motion.
+  const { scrollYProgress } = useScroll();
 
   return (
     <main
       className="min-h-screen bg-ink"
       style={{ "--accent": accent } as React.CSSProperties}
     >
+      <motion.div
+        aria-hidden="true"
+        className="fixed top-0 inset-x-0 h-[2px] origin-left z-50"
+        style={{ scaleX: scrollYProgress, background: accent }}
+      />
       <WorkNav />
       <PageRise>
         <Container>
