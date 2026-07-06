@@ -49,6 +49,28 @@ export function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Shared scroll-reveal: content rises gently the first time it enters
+// the viewport. Renders static under prefers-reduced-motion.
+export function Reveal({
+  children,
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+}) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.div
+      initial={reduce ? false : { opacity: 0, y: 22 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.55, delay, ease: [0.2, 0.8, 0.2, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 function TypewriterCycle({ lines, accent }: { lines: string[]; accent: string }) {
   const [idx, setIdx] = useState(0);
   const [text, setText] = useState("");
@@ -255,18 +277,39 @@ function HeroSnapshot({ accent }: { accent: string }) {
   );
 }
 
+function ImpactStat({
+  value, unit, label, accent, inView, delay,
+}: {
+  value: string; unit: string; label: string; accent: string; inView: boolean; delay: number;
+}) {
+  const reduce = useReducedMotion();
+  const target = parseInt(value, 10);
+  const count = useCountUp(Number.isNaN(target) ? 0 : target, 900, inView);
+  const display = Number.isNaN(target) ? value : String(count);
+  return (
+    <motion.div
+      className="rounded-xl p-5 bg-white/[0.03]"
+      initial={reduce ? false : { opacity: 0, y: 18 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay, ease: [0.2, 0.8, 0.2, 1] }}
+    >
+      <div className="font-display text-3xl font-medium text-white tabular-nums">
+        {display} <span className="text-lg" style={{ color: accent }}>{unit}</span>
+      </div>
+      <div className="text-xs text-white/45 mt-1">{label}</div>
+    </motion.div>
+  );
+}
+
 export function ImpactStats({ accent }: { accent: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
   return (
     <Container>
-      <section className="pb-12">
+      <section ref={ref} className="pb-12">
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
         {statsData.map((s, i) => (
-          <div key={i} className="rounded-xl p-5 bg-white/[0.03]">
-            <div className="font-display text-3xl font-medium text-white">
-              {s.value} <span className="text-lg" style={{ color: accent }}>{s.unit}</span>
-            </div>
-            <div className="text-xs text-white/45 mt-1">{s.label}</div>
-          </div>
+          <ImpactStat key={s.label} {...s} accent={accent} inView={inView} delay={i * 0.1} />
         ))}
       </div>
       </section>
@@ -339,6 +382,7 @@ export function FlagshipProject({ accent }: { accent: string }) {
     <Container>
       <section id="work" className="pb-12">
       <SectionLabel>flagship project</SectionLabel>
+      <Reveal>
       <div className="rounded-2xl p-7 bg-white/[0.03] border border-white/[0.07]">
         <h2 className="font-display text-2xl font-medium text-white tracking-tight mb-1.5">
           {f.title}
@@ -401,6 +445,7 @@ export function FlagshipProject({ accent }: { accent: string }) {
           </Link>
         </div>
       </div>
+      </Reveal>
       </section>
     </Container>
   );
@@ -439,24 +484,25 @@ export function MoreWork({ accent }: { accent: string }) {
       <section className="pb-12">
       <SectionLabel>more work</SectionLabel>
       <div className="border-t border-white/[0.07]">
-        {moreWork.map((m) => (
-          <Link
-            key={m.slug}
-            href={`/work/${m.slug}`}
-            className="group flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-4 py-4 border-b border-white/[0.07]"
-          >
-            <span className="font-display text-lg text-white font-medium">{m.title}</span>
-            <span className="flex items-center gap-3 text-[13px] text-white/45">
-              {m.descriptor}
-              <span
-                className="inline-flex items-center gap-1 shrink-0 transition-transform group-hover:translate-x-0.5"
-                style={{ color: accent }}
-              >
-                case study
-                <Icon name="arrow-up-right" size={13} />
+        {moreWork.map((m, i) => (
+          <Reveal key={m.slug} delay={i * 0.08}>
+            <Link
+              href={`/work/${m.slug}`}
+              className="group flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-4 py-4 border-b border-white/[0.07]"
+            >
+              <span className="font-display text-lg text-white font-medium">{m.title}</span>
+              <span className="flex items-center gap-3 text-[13px] text-white/45">
+                {m.descriptor}
+                <span
+                  className="inline-flex items-center gap-1 shrink-0 transition-transform group-hover:translate-x-0.5"
+                  style={{ color: accent }}
+                >
+                  case study
+                  <Icon name="arrow-up-right" size={13} />
+                </span>
               </span>
-            </span>
-          </Link>
+            </Link>
+          </Reveal>
         ))}
       </div>
       </section>
@@ -469,10 +515,12 @@ export function Skills() {
     <Container>
       <section className="pb-12">
       <SectionLabel>skills</SectionLabel>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <SkillCol data={skills.core} dot="#D85A30" filled />
-        <SkillCol data={skills.growing} dot="#5DCAA5" />
-      </div>
+      <Reveal>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <SkillCol data={skills.core} dot="#D85A30" filled />
+          <SkillCol data={skills.growing} dot="#5DCAA5" />
+        </div>
+      </Reveal>
       </section>
     </Container>
   );
@@ -664,6 +712,7 @@ export function Contact({ accent }: { accent: string }) {
   return (
     <Container>
       <section className="pb-14">
+      <Reveal>
       <div className="rounded-2xl p-8 text-center" style={{ border: `1px solid ${accent}4d` }}>
         <h2 className="font-display text-2xl sm:text-[28px] font-medium text-white tracking-tight mb-2">
           Let&rsquo;s talk.
@@ -688,6 +737,7 @@ export function Contact({ accent }: { accent: string }) {
           <CopyEmail accent={accent} />
         </div>
       </div>
+      </Reveal>
       </section>
     </Container>
   );
