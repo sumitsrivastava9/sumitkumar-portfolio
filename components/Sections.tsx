@@ -41,7 +41,7 @@ export function PageRise({ children }: { children: React.ReactNode }) {
 export function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-baseline gap-3 mb-5">
-      <span className="text-[11px] tracking-[0.18em] uppercase text-white/45 font-display">
+      <span className="text-[11px] tracking-[0.18em] uppercase text-white/60 font-display">
         {children}
       </span>
       <span className="flex-1 h-px bg-white/10" />
@@ -71,7 +71,7 @@ export function Reveal({
   );
 }
 
-function TypewriterCycle({ lines, accent }: { lines: string[]; accent: string }) {
+export function TypewriterCycle({ lines, accent }: { lines: string[]; accent: string }) {
   const [idx, setIdx] = useState(0);
   const [text, setText] = useState("");
   const [phase, setPhase] = useState<"typing" | "pausing" | "deleting">("typing");
@@ -102,7 +102,7 @@ function TypewriterCycle({ lines, accent }: { lines: string[]; accent: string })
 
   return (
     <div className="mt-5 flex items-center gap-2.5 min-h-[22px]">
-      <span className="text-[10px] tracking-[0.14em] text-white/30 font-display uppercase shrink-0">now</span>
+      <span className="text-[10px] tracking-[0.14em] text-white/55 font-display uppercase shrink-0">now</span>
       <span className="text-[13px] font-display" style={{ color: accent }}>
         {text}
         <motion.span
@@ -129,7 +129,7 @@ export function Hero({
     <Container>
       <section className="pt-14 pb-12 grid md:grid-cols-[1.05fr_0.95fr] gap-10 md:gap-12 items-center">
         <div>
-          <div className="text-[11px] tracking-[0.22em] uppercase text-white/45 mb-3.5 font-display">
+          <div className="text-[11px] tracking-[0.22em] uppercase text-white/60 mb-3.5 font-display">
             {eyebrowProp ?? heroData.eyebrow}
           </div>
           <h1 className="font-display text-4xl sm:text-5xl md:text-[54px] leading-[0.98] font-medium tracking-tightest text-white mb-4">
@@ -247,7 +247,7 @@ function HeroSnapshot({ accent }: { accent: string }) {
             <div className="font-display text-[15px] text-white font-medium leading-tight">
               {profile.name}
             </div>
-            <div className="text-[11px] text-white/45 truncate">
+            <div className="text-[11px] text-white/60 truncate">
               {s.company || profile.role}
             </div>
           </div>
@@ -255,7 +255,7 @@ function HeroSnapshot({ accent }: { accent: string }) {
         <dl className="space-y-2.5">
           {s.rows.map((r) => (
             <div key={r.label} className="flex items-baseline justify-between gap-4">
-              <dt className="text-[11px] tracking-[0.08em] uppercase text-white/40 font-display">
+              <dt className="text-[11px] tracking-[0.08em] uppercase text-white/60 font-display">
                 {r.label}
               </dt>
               <dd className="text-[13px] text-white/85 text-right font-display">{r.value}</dd>
@@ -296,7 +296,7 @@ function ImpactStat({
       <div className="font-display text-3xl font-medium text-white tabular-nums">
         {display} <span className="text-lg" style={{ color: accent }}>{unit}</span>
       </div>
-      <div className="text-xs text-white/45 mt-1">{label}</div>
+      <div className="text-xs text-white/60 mt-1">{label}</div>
     </motion.div>
   );
 }
@@ -318,18 +318,24 @@ export function ImpactStats({ accent }: { accent: string }) {
 }
 
 function useCountUp(target: number, durationMs: number, inView: boolean) {
-  const [val, setVal] = useState(0);
+  // Starts at the real value so server-rendered HTML carries the true
+  // number (crawlers, link previews and no-JS visitors all read it);
+  // the 0 → target sweep only plays client-side once the stat scrolls
+  // into view.
+  const [val, setVal] = useState(target);
   const reduce = useReducedMotion();
   useEffect(() => {
-    if (!inView) return;
-    if (reduce || target === 0) { setVal(target); return; }
+    if (!inView || reduce || target === 0) return;
+    setVal(0);
     const start = performance.now();
+    let raf: number;
     const tick = (now: number) => {
       const t = Math.min((now - start) / durationMs, 1);
       setVal(Math.round((1 - Math.pow(1 - t, 3)) * target));
-      if (t < 1) requestAnimationFrame(tick);
+      if (t < 1) raf = requestAnimationFrame(tick);
     };
-    requestAnimationFrame(tick);
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, [inView, target, durationMs, reduce]);
   return val;
 }
@@ -355,7 +361,7 @@ function StatCounter({
       >
         {count}{suffix}
       </div>
-      <div className="text-[12px] text-white/45 leading-snug">{label}</div>
+      <div className="text-[12px] text-white/60 leading-snug">{label}</div>
     </motion.div>
   );
 }
@@ -410,11 +416,11 @@ export function FlagshipProject({ accent }: { accent: string }) {
                 <Icon name="play" size={27} style={{ color: accent }} />
               </div>
               <div className="text-[13px] text-white/80 font-display">Walkthrough · {f.video.durationLabel}</div>
-              <div className="text-[11px] text-white/40 mt-1">{f.video.caption}</div>
+              <div className="text-[11px] text-white/60 mt-1">{f.video.caption}</div>
             </div>
           )}
         </div>
-        <div className="flex items-center gap-2 mb-5 text-[11px] text-white/40">
+        <div className="flex items-center gap-2 mb-5 text-[11px] text-white/60">
           <Icon name="lock" size={13} />
           {f.privacyNote}
         </div>
@@ -491,7 +497,7 @@ export function MoreWork({ accent }: { accent: string }) {
               className="group flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-4 py-4 border-b border-white/[0.07]"
             >
               <span className="font-display text-lg text-white font-medium">{m.title}</span>
-              <span className="flex items-center gap-3 text-[13px] text-white/45">
+              <span className="flex items-center gap-3 text-[13px] text-white/60">
                 {m.descriptor}
                 <span
                   className="inline-flex items-center gap-1 shrink-0 transition-transform group-hover:translate-x-0.5"
@@ -541,7 +547,7 @@ function SkillCol({
         <span className="w-[7px] h-[7px] rounded-full" style={{ background: dot }} />
         <span className="font-display text-[15px] text-white font-medium">{data.label}</span>
       </div>
-      <p className="text-xs text-white/45 mb-3.5">{data.note}</p>
+      <p className="text-xs text-white/60 mb-3.5">{data.note}</p>
       <div className="flex flex-wrap gap-2">
         {data.items.map((it) => (
           <span
@@ -614,7 +620,7 @@ export function RecruiterCard({ accent }: { accent: string }) {
                 <div className="font-display text-[17px] font-medium text-white leading-tight">
                   {profile.name}
                 </div>
-                <div className="text-[12px] text-white/45 mt-0.5">{profile.role}</div>
+                <div className="text-[12px] text-white/60 mt-0.5">{profile.role}</div>
               </div>
             </motion.div>
             <dl className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -629,7 +635,7 @@ export function RecruiterCard({ accent }: { accent: string }) {
                   transition={{ duration: 0.4, delay: 0.2 + i * 0.09, ease: [0.2, 0.8, 0.2, 1] }}
                   whileHover={{ y: -3, background: "rgba(255,255,255,0.06)", transition: { duration: 0.18 } }}
                 >
-                  <dt className="text-[10px] tracking-[0.1em] uppercase text-white/35 font-display mb-1.5">
+                  <dt className="text-[10px] tracking-[0.1em] uppercase text-white/55 font-display mb-1.5">
                     {f.label}
                   </dt>
                   <dd className="text-[13px] text-white/85 font-display">{f.value}</dd>
@@ -695,7 +701,7 @@ function CopyEmail({ accent }: { accent: string }) {
   return (
     <button
       onClick={copy}
-      className="mt-5 inline-flex items-center gap-2 text-[12px] text-white/45 hover:text-white/80 transition-colors bg-transparent border-0 cursor-pointer font-display"
+      className="mt-5 inline-flex items-center gap-2 text-[12px] text-white/60 hover:text-white/80 transition-colors bg-transparent border-0 cursor-pointer font-display"
       aria-live="polite"
     >
       <Icon

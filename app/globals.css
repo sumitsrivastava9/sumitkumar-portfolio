@@ -53,3 +53,15 @@ a {
   outline-offset: 3px;
   border-radius: 6px;
 }
+
+/* Topic ticker on the learner page: two copies of the row shift left by
+   one copy's width for a seamless loop. The reduced-motion block above
+   zeroes this animation, leaving a static row. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}

@@ -153,14 +153,16 @@ export const caseStudies: CaseStudy[] = [
     readTime: "1 min",
     facts: [
       { label: "Role", value: "Frontend engineer" },
-      { label: "Result", value: "Latency 800ms to 440ms" },
+      // "Time to first token", not total latency: SSE doesn't make the
+      // model finish sooner, it makes the answer start appearing sooner.
+      { label: "Result", value: "Time to first token 800ms to 440ms" },
     ],
-    metrics: [{ value: "~440ms", label: "response latency, down from ~800ms" }],
+    metrics: [{ value: "~440ms", label: "time to first token, down from ~800ms" }],
     sections: [
       {
         heading: "The short version",
         paragraphs: [
-          "An AI chat that streams its answers over Server-Sent Events instead of waiting for the full completion. Response latency dropped from around 800ms to around 440ms.",
+          "An AI chat that streams its answers over Server-Sent Events instead of waiting for the full completion. Time to first token dropped from around 800ms to around 440ms.",
         ],
       },
       {

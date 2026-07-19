@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { gateProfiles, accents, profile, ProfileKey } from "@/data/content";
+import { exitToGate, rememberProfile } from "@/lib/profile";
 import Icon from "@/components/Icon";
 
 export default function Nav({ current }: { current: ProfileKey }) {
@@ -13,9 +14,7 @@ export default function Nav({ current }: { current: ProfileKey }) {
   const me = gateProfiles.find((p) => p.key === current)!;
 
   function switchTo(key: ProfileKey) {
-    try {
-      localStorage.setItem("profile", key);
-    } catch {}
+    rememberProfile(key);
     setOpen(false);
     router.push(`/${key}`);
   }
@@ -24,12 +23,7 @@ export default function Nav({ current }: { current: ProfileKey }) {
     <nav className="border-b border-white/[0.06]">
       <div className="w-full max-w-[1080px] mx-auto px-6 sm:px-8 py-5 flex justify-between items-center">
       <button
-        onClick={() => {
-          try {
-            localStorage.removeItem("profile");
-          } catch {}
-          router.push("/");
-        }}
+        onClick={exitToGate}
         className="text-sm text-white font-medium font-display bg-transparent border-0 cursor-pointer"
       >
         {profile.name.toLowerCase()}

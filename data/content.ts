@@ -107,7 +107,7 @@ export const moreWork = [
   },
   {
     title: "Real-time AI chat (SSE)",
-    descriptor: "streaming · latency 800ms to 440ms",
+    descriptor: "streaming · first token 800ms to 440ms",
     slug: "realtime-ai-chat",
   },
 ];
@@ -129,35 +129,78 @@ export const skills = {
 
 // ---- Learner page ----
 // Honest framing: this is the in-progress journey, not a claim of
-// backend seniority. TODO(sumit): keep "current" in sync with what
-// you're actually building; write-ups land here later as a blog.
+// backend seniority. TODO(sumit): keep journey states in sync with
+// what you're actually building; write-ups land here later as a blog.
+export type JourneyStep = {
+  // done = shipped and defensible · now = on the bench today ·
+  // next = committed, not started
+  state: "done" | "now" | "next";
+  title: string;
+  detail: string;
+  tags?: string[];
+};
+
 export const learner = {
   eyebrow: "for learners",
-  heading: "Learning in public.",
+  heading: "Learning in public",
   intro:
     "I'm a frontend engineer deliberately becoming a full-stack one. This page tracks that move as it happens: what I'm building, what I got wrong, and what I'd tell past-me.",
-  currentLabel: "currently building",
-  current: [
+  // Typewriter under the intro. Only things actually on the bench.
+  cycle: [
+    "a task manager, built twice",
+    "Express, PostgreSQL and JWT auth",
+    "a second take on SST v3 + AWS",
+    "writing up every mistake",
+  ],
+  journeyLabel: "the journey",
+  journey: [
     {
+      state: "done",
+      title: "Frontend at production scale",
+      detail:
+        "Three years of React, Next.js and TypeScript across 10+ live apps. The foundation the rest builds on.",
+    },
+    {
+      state: "now",
       title: "Task manager, full-stack",
       detail:
         "A REST API in Node and Express with PostgreSQL and JWT auth, plus a React frontend on top. Hand-rolling the pieces frameworks usually hide.",
       tags: ["Express", "PostgreSQL", "JWT", "React"],
     },
     {
+      state: "now",
       title: "Task manager, serverless",
       detail:
-        "A second take on the same product built on SST v3 on AWS, to feel where serverless helps and where it fights you.",
+        "The same product rebuilt on SST v3 on AWS, to feel where serverless helps and where it fights you.",
       tags: ["SST v3", "AWS", "Serverless"],
     },
+    {
+      state: "next",
+      title: "Write-ups, in public",
+      detail:
+        "Every build documented: the decisions, the mistakes, the fixes. They land on this page as a blog.",
+    },
+    {
+      state: "next",
+      title: "Full-stack in production",
+      detail:
+        "Fold the backend skills back into client work and ship end to end.",
+    },
+  ] as JourneyStep[],
+  topicsLabel: "on the bench right now",
+  // Ticker content: topics being learned, not skill claims.
+  topics: [
+    "REST API design",
+    "Express middleware",
+    "PostgreSQL schemas",
+    "JWT auth flows",
+    "SST v3",
+    "AWS Lambda",
+    "cold starts",
+    "DB migrations",
+    "input validation",
+    "error handling",
   ],
-  planLabel: "the plan",
-  plan: [
-    "Build small, real full-stack projects and ship them end to end",
-    "Write up each one: the decisions, the mistakes, the fixes",
-    "Fold the backend skills back into production work",
-  ],
-  note: "Write-ups land here soon. Until then, the shipped work lives in the hiring-manager view.",
 };
 
 // ---- Recruiter facts ----
