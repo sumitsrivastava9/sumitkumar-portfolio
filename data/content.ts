@@ -101,9 +101,9 @@ export const flagship = {
 // Each row links to /work/<slug>; the page copy is in caseStudies.ts.
 export const moreWork = [
   {
-    title: "AutoOrder AI",
-    descriptor: "voice ordering · two-stage NLP · +40-55% completion",
-    slug: "autoorder-ai",
+    title: "MealPilot",
+    descriptor: "food ordering · AI assistant · Next.js · live demo",
+    slug: "mealpilot",
   },
   {
     title: "Real-time AI chat (SSE)",

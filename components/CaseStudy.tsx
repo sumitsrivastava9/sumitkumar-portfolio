@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, useScroll } from "framer-motion";
 import type { CaseStudy } from "@/data/caseStudies";
 import { caseStudies } from "@/data/caseStudies";
@@ -90,7 +91,40 @@ export default function CaseStudyPage({ study }: { study: CaseStudy }) {
                 </div>
               ))}
             </dl>
+
+            {study.liveUrl && (
+              <div className="mt-6">
+                <a
+                  href={study.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-display font-medium transition-opacity hover:opacity-80"
+                  style={{ background: `${study.accent}22`, color: study.accent, border: `1px solid ${study.accent}44` }}
+                >
+                  <Icon name="arrow-up-right" size={14} />
+                  View live
+                </a>
+              </div>
+            )}
           </header>
+
+          {study.image && (
+            <section className="pb-10">
+              <div className="relative w-full rounded-xl overflow-hidden border border-white/[0.08]">
+                <Image
+                  src={study.image.src}
+                  alt={study.image.alt}
+                  width={1280}
+                  height={800}
+                  className="w-full h-auto object-cover"
+                  priority
+                />
+              </div>
+              {study.image.caption && (
+                <p className="mt-3 text-[11px] text-white/60">{study.image.caption}</p>
+              )}
+            </section>
+          )}
 
           {study.video && (
             <section className="pb-10">

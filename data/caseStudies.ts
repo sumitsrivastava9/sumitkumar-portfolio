@@ -22,6 +22,8 @@ export type CaseStudy = {
   tags: string[];
   video?: { src: string; poster: string; durationLabel: string; caption: string };
   privacyNote?: string;
+  liveUrl?: string;
+  image?: { src: string; alt: string; caption?: string };
 };
 
 export const caseStudies: CaseStudy[] = [
@@ -106,40 +108,80 @@ export const caseStudies: CaseStudy[] = [
   },
 
   {
-    // TODO(sumit): expand this brief into a full case study. Add: what
-    // the two NLP stages actually are, what the UI had to solve, and
-    // what the +40-55% range depends on. Verify every sentence.
-    slug: "autoorder-ai",
-    title: "AutoOrder AI",
-    subtitle: "Voice ordering built around a two-stage NLP flow",
-    accent: "#EF9F27",
-    readTime: "1 min",
+    slug: "mealpilot",
+    title: "MealPilot: food ordering with an AI assistant",
+    subtitle:
+      "A full food-ordering app with a natural-language dish assistant grounded in the live menu",
+    accent: "#FF6B35",
+    readTime: "4 min",
     facts: [
-      { label: "Role", value: "Frontend engineer" },
-      { label: "Result", value: "+40-55% order completion" },
+      { label: "Role", value: "Sole engineer (personal project)" },
+      { label: "Status", value: "Live · demo at mealpilot-murex.vercel.app" },
+      { label: "Stack", value: "Next.js · TypeScript · Redux Toolkit · Claude API" },
     ],
-    metrics: [{ value: "+40-55%", label: "order completion" }],
+    metrics: [
+      { value: "0", label: "hallucinated dishes reach the cart" },
+      { value: "£0", label: "API cost on the public demo" },
+      { value: "Live", label: "deployed on Vercel" },
+    ],
     sections: [
       {
-        heading: "The short version",
+        heading: "Context",
         paragraphs: [
-          "AutoOrder AI takes orders by voice. I built the ordering interface around its two-stage NLP flow, and order completion improved by 40 to 55%.",
+          "MealPilot is a personal project: a food-ordering web app with a built-in AI ordering assistant. You browse restaurants pulled from Swiggy's live API, add dishes to a cart, and — instead of scrolling — you can describe what you feel like eating in plain English and the assistant suggests real dishes from that restaurant's menu. One click adds them to the cart.",
+          "I built it to demonstrate two things together: a polished, production-quality frontend and an AI feature integrated in a way I can fully explain and defend. The backend and AI layer are deliberately small — chosen for clarity, not for show.",
         ],
       },
       {
         heading: "The problem",
         paragraphs: [
-          "Completion rate is the metric a voice product lives or dies on. Every moment a user is unsure whether they were understood is a moment they can abandon the order.",
+          "Classic food-delivery apps require users to scroll through long menus to find something that fits their mood. That friction is a dead end for indecisive or time-poor users.",
+          "The second problem is reliability. Swiggy's API is unofficial and throttles aggressively. An app that depends on it entirely goes blank in a demo. The AI adds its own failure mode: a model that invents dishes is worse than no assistant at all.",
         ],
       },
       {
         heading: "What I built",
         paragraphs: [
-          "The frontend of the ordering flow: the interface that carries a customer from spoken input through both NLP stages to a confirmed order, with UI states that keep them oriented about what the system heard and what happens next.",
+          "The full ordering flow: a home page that lists restaurants with shimmer loading while the API responds, a menu page with veg/non-veg markers and tags, and a cart where the ADD button turns into a quantity stepper (minus, number, plus) and a drawer shows the running total. Redux Toolkit holds the cart in one shared place so the menu, the header badge, the drawer, and the AI suggestions all read the same state.",
+          "On top of that, the AI assistant: a text input where you describe what you want. The browser sends the message and the current menu to a Next.js server route, which asks Claude to suggest dishes and return their IDs in a structured JSON shape. The route validates every ID against the real menu before anything reaches the screen. A dish the model invented cannot enter the cart.",
+        ],
+      },
+      {
+        heading: "Key technical decisions",
+        paragraphs: [
+          "The menu goes directly into the prompt rather than into a vector database. For a single restaurant's menu that is not over-engineering avoidance — it is the right fit. The context window is large enough, the menu is small, and retrieval would add latency and complexity with no real benefit at this scale.",
+          "The API key lives only inside the Next.js server route, read from an environment variable. It is never sent to the browser. That single route is the only reason a server exists in this app.",
+          "Swiggy's API is proxied through a Next.js rewrite so the browser never hits it directly and CORS is bypassed at the server layer. A local fallback dataset means the app keeps working in a demo if Swiggy throttles the request — the real restaurant name is preserved and a matching sample menu is shown instead.",
+          "The public Vercel deploy runs a free rule-based fallback in place of the real AI: it reads signals from the request (veg or non-veg, a price ceiling, words like spicy or bestseller) and filters the menu directly. No API key is needed, no one can run up a bill, and the feature is clearly labelled as demo mode in the UI.",
+        ],
+      },
+      {
+        heading: "Tradeoffs",
+        paragraphs: [
+          "Putting the menu in the prompt is simple but has a ceiling. If the menu grew large — many categories, hundreds of dishes — the prompt would get expensive and the model's attention would spread thin. At that point the right move is retrieval: embed the menu, store it in a vector index, and retrieve the relevant slice per query. I chose not to build that here because it would be the right answer to a problem this app does not have.",
+          "Demo mode is genuinely less capable than the real assistant. It catches structured signals well but misses free-form phrasing. I accepted that gap because the alternative — shipping a key that anyone can exhaust — is worse.",
+        ],
+      },
+      {
+        heading: "Impact",
+        paragraphs: [
+          "The app is live, the AI assistant never surfaces a dish that does not exist, and the public demo costs nothing to run. I also wrote a small evaluation script — about a dozen labelled requests, each with a verifiable rule — that checks whether the suggestions satisfy the stated constraint and prints an accuracy score. That gives me a repeatable way to test prompt changes without guessing.",
+        ],
+      },
+      {
+        heading: "What I would do next",
+        paragraphs: [
+          "User accounts and a real database for orders, real payment integration in test mode, streaming the AI reply token by token instead of waiting for the full response, voice input, and — when the menu outgrows the prompt — a proper retrieval layer with embeddings and vector search.",
         ],
       },
     ],
-    tags: ["React", "TypeScript", "Voice UI", "NLP integration"],
+    tags: ["Next.js", "TypeScript", "Redux Toolkit", "Claude API", "Tailwind CSS"],
+    liveUrl: "https://mealpilot-murex.vercel.app/",
+    image: {
+      src: "/mealpilot-preview.png",
+      alt: "MealPilot app — restaurant listing and AI assistant",
+      caption: "Live demo · no API key required · AI runs in rule-based demo mode",
+    },
   },
 
   {
