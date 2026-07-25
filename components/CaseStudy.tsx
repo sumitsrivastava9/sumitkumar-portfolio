@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { motion, useScroll } from "framer-motion";
 import type { CaseStudy } from "@/data/caseStudies";
 import { caseStudies } from "@/data/caseStudies";
 import { profile } from "@/data/content";
+import { exitToGate } from "@/lib/profile";
 import Icon from "./Icon";
 import { Container, PageRise, SectionLabel, Contact } from "./Sections";
 
@@ -14,7 +15,6 @@ import { Container, PageRise, SectionLabel, Contact } from "./Sections";
 // the profile switcher it offers a way back to wherever the visitor
 // came from (their remembered profile, defaulting to the manager view).
 function WorkNav() {
-  const router = useRouter();
   const [backHref, setBackHref] = useState("/manager");
   useEffect(() => {
     try {
@@ -27,12 +27,7 @@ function WorkNav() {
     <nav className="border-b border-white/[0.06]">
       <div className="w-full max-w-[1080px] mx-auto px-6 sm:px-8 py-5 flex justify-between items-center">
         <button
-          onClick={() => {
-            try {
-              localStorage.removeItem("profile");
-            } catch {}
-            router.push("/");
-          }}
+          onClick={exitToGate}
           className="text-sm text-white font-medium font-display bg-transparent border-0 cursor-pointer"
         >
           {profile.name.toLowerCase()}
@@ -87,7 +82,7 @@ export default function CaseStudyPage({ study }: { study: CaseStudy }) {
             <dl className="flex flex-wrap gap-x-10 gap-y-3 mt-7">
               {study.facts.map((f) => (
                 <div key={f.label}>
-                  <dt className="text-[10px] tracking-[0.1em] uppercase text-white/40 font-display">
+                  <dt className="text-[10px] tracking-[0.1em] uppercase text-white/60 font-display">
                     {f.label}
                   </dt>
                   <dd className="text-[13px] text-white/85 font-display mt-1">
@@ -96,7 +91,40 @@ export default function CaseStudyPage({ study }: { study: CaseStudy }) {
                 </div>
               ))}
             </dl>
+
+            {study.liveUrl && (
+              <div className="mt-6">
+                <a
+                  href={study.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-display font-medium transition-opacity hover:opacity-80"
+                  style={{ background: `${study.accent}22`, color: study.accent, border: `1px solid ${study.accent}44` }}
+                >
+                  <Icon name="arrow-up-right" size={14} />
+                  View live
+                </a>
+              </div>
+            )}
           </header>
+
+          {study.image && (
+            <section className="pb-10">
+              <div className="relative w-full rounded-xl overflow-hidden border border-white/[0.08]">
+                <Image
+                  src={study.image.src}
+                  alt={study.image.alt}
+                  width={1280}
+                  height={800}
+                  className="w-full h-auto object-cover"
+                  priority
+                />
+              </div>
+              {study.image.caption && (
+                <p className="mt-3 text-[11px] text-white/60">{study.image.caption}</p>
+              )}
+            </section>
+          )}
 
           {study.video && (
             <section className="pb-10">
@@ -110,7 +138,7 @@ export default function CaseStudyPage({ study }: { study: CaseStudy }) {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="flex items-center gap-2 mt-3 text-[11px] text-white/40">
+              <div className="flex items-center gap-2 mt-3 text-[11px] text-white/60">
                 <Icon name="lock" size={13} />
                 {study.privacyNote ?? study.video.caption}
               </div>
@@ -130,7 +158,7 @@ export default function CaseStudyPage({ study }: { study: CaseStudy }) {
                   >
                     {m.value}
                   </div>
-                  <div className="text-xs text-white/45 mt-1">{m.label}</div>
+                  <div className="text-xs text-white/60 mt-1">{m.label}</div>
                 </div>
               ))}
             </div>
@@ -177,7 +205,7 @@ export default function CaseStudyPage({ study }: { study: CaseStudy }) {
                   <div className="font-display text-2xl font-medium text-white group-hover:text-white/80 transition-colors">
                     {next.title}
                   </div>
-                  <div className="text-[13px] text-white/45 mt-1">{next.subtitle}</div>
+                  <div className="text-[13px] text-white/60 mt-1">{next.subtitle}</div>
                 </div>
                 <span
                   className="shrink-0 group-hover:translate-x-1 transition-transform"

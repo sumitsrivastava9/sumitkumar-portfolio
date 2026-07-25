@@ -4,6 +4,7 @@ out
 .env*.local
 .DS_Store
 *.log
+tsconfig.tsbuildinfo
 
 # Raw media originals (screen recordings, full-res photos). Only the
 # web-optimised versions in /public ship with the site.
