@@ -24,6 +24,7 @@ export type CaseStudy = {
   privacyNote?: string;
   liveUrl?: string;
   image?: { src: string; alt: string; caption?: string };
+  images?: { src: string; alt: string; label?: string }[];
 };
 
 export const caseStudies: CaseStudy[] = [
@@ -177,11 +178,18 @@ export const caseStudies: CaseStudy[] = [
     ],
     tags: ["Next.js", "TypeScript", "Redux Toolkit", "Claude API", "Tailwind CSS"],
     liveUrl: "https://mealpilot-murex.vercel.app/",
-    image: {
-      src: "/mealpilot-preview.png",
-      alt: "MealPilot app — restaurant listing and AI assistant",
-      caption: "Live demo · no API key required · AI runs in rule-based demo mode",
-    },
+    images: [
+      {
+        src: "/1stmealpilot.png",
+        alt: "MealPilot — restaurant listing with search",
+        label: "Restaurant listing",
+      },
+      {
+        src: "/2ndMealPilot.png",
+        alt: "MealPilot — menu page with AI ordering assistant",
+        label: "AI ordering assistant",
+      },
+    ],
   },
 
 ];
