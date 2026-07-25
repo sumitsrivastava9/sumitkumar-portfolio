@@ -24,6 +24,7 @@ export type CaseStudy = {
   privacyNote?: string;
   liveUrl?: string;
   image?: { src: string; alt: string; caption?: string };
+  images?: { src: string; alt: string; label?: string }[];
 };
 
 export const caseStudies: CaseStudy[] = [
@@ -177,49 +178,18 @@ export const caseStudies: CaseStudy[] = [
     ],
     tags: ["Next.js", "TypeScript", "Redux Toolkit", "Claude API", "Tailwind CSS"],
     liveUrl: "https://mealpilot-murex.vercel.app/",
-    image: {
-      src: "/mealpilot-preview.png",
-      alt: "MealPilot app — restaurant listing and AI assistant",
-      caption: "Live demo · no API key required · AI runs in rule-based demo mode",
-    },
+    images: [
+      {
+        src: "/1stmealpilot.png",
+        alt: "MealPilot — restaurant listing with search",
+        label: "Restaurant listing",
+      },
+      {
+        src: "/2ndMealPilot.png",
+        alt: "MealPilot — menu page with AI ordering assistant",
+        label: "AI ordering assistant",
+      },
+    ],
   },
 
-  {
-    // TODO(sumit): expand this brief. Add the hard parts you actually
-    // solved (scroll behaviour, partial formatting, reconnects, error
-    // states) and confirm exactly what the 800ms/440ms figures measure.
-    slug: "realtime-ai-chat",
-    title: "Real-time AI chat",
-    subtitle: "Streaming responses over Server-Sent Events",
-    accent: "#7F77DD",
-    readTime: "1 min",
-    facts: [
-      { label: "Role", value: "Frontend engineer" },
-      // "Time to first token", not total latency: SSE doesn't make the
-      // model finish sooner, it makes the answer start appearing sooner.
-      { label: "Result", value: "Time to first token 800ms to 440ms" },
-    ],
-    metrics: [{ value: "~440ms", label: "time to first token, down from ~800ms" }],
-    sections: [
-      {
-        heading: "The short version",
-        paragraphs: [
-          "An AI chat that streams its answers over Server-Sent Events instead of waiting for the full completion. Time to first token dropped from around 800ms to around 440ms.",
-        ],
-      },
-      {
-        heading: "The problem",
-        paragraphs: [
-          "A chat that shows nothing until the whole answer arrives feels broken at exactly the moment the user is paying the most attention. The fix is not a faster model; it is not waiting for the model to finish.",
-        ],
-      },
-      {
-        heading: "What I built",
-        paragraphs: [
-          "Delivery over SSE with incremental rendering on the client: tokens appear as they arrive, so the answer starts appearing as soon as the model starts producing it.",
-        ],
-      },
-    ],
-    tags: ["React", "TypeScript", "SSE", "Streaming UI"],
-  },
 ];

@@ -126,6 +126,35 @@ export default function CaseStudyPage({ study }: { study: CaseStudy }) {
             </section>
           )}
 
+          {study.images && study.images.length > 0 && (
+            <section className="pb-10">
+              <div className={`grid gap-3 ${study.images.length >= 2 ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1"}`}>
+                {study.images.map((img, i) => (
+                  <div key={i} className="flex flex-col gap-2">
+                    <div className="rounded-xl overflow-hidden border border-white/[0.08]">
+                      <Image
+                        src={img.src}
+                        alt={img.alt}
+                        width={1280}
+                        height={706}
+                        className="w-full h-auto"
+                        priority={i === 0}
+                      />
+                    </div>
+                    {img.label && (
+                      <p className="text-[11px] font-display tracking-[0.12em] uppercase text-center" style={{ color: accent }}>
+                        {img.label}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <p className="mt-3 text-[11px] text-white/40 text-center">
+                Live demo · no API key required · AI runs in rule-based demo mode
+              </p>
+            </section>
+          )}
+
           {study.video && (
             <section className="pb-10">
               <div className="relative aspect-video rounded-xl overflow-hidden bg-ink-soft border border-white/[0.08]">

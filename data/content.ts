@@ -101,14 +101,13 @@ export const flagship = {
 // Each row links to /work/<slug>; the page copy is in caseStudies.ts.
 export const moreWork = [
   {
+    eyebrow: "Personal project · 2025",
     title: "MealPilot",
-    descriptor: "food ordering · AI assistant · Next.js · live demo",
+    description: "Food-ordering app with an AI assistant that suggests real dishes from the live menu — you describe what you feel like, it picks from what's actually available.",
+    descriptor: "Next.js · Redux Toolkit · Claude API · Live demo",
     slug: "mealpilot",
-  },
-  {
-    title: "Real-time AI chat (SSE)",
-    descriptor: "streaming · first token 800ms to 440ms",
-    slug: "realtime-ai-chat",
+    liveUrl: "https://mealpilot-murex.vercel.app/",
+    accent: "#FF6B35",
   },
 ];
 

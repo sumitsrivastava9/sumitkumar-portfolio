@@ -488,29 +488,52 @@ export function MoreWork({ accent }: { accent: string }) {
   return (
     <Container>
       <section className="pb-12">
-      <SectionLabel>more work</SectionLabel>
-      <div className="border-t border-white/[0.07]">
-        {moreWork.map((m, i) => (
-          <Reveal key={m.slug} delay={i * 0.08}>
-            <Link
-              href={`/work/${m.slug}`}
-              className="group flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-4 py-4 border-b border-white/[0.07]"
-            >
-              <span className="font-display text-lg text-white font-medium">{m.title}</span>
-              <span className="flex items-center gap-3 text-[13px] text-white/60">
-                {m.descriptor}
-                <span
-                  className="inline-flex items-center gap-1 shrink-0 transition-transform group-hover:translate-x-0.5"
-                  style={{ color: accent }}
+        <SectionLabel>more work</SectionLabel>
+        <div className="border-t border-white/[0.07]">
+          {moreWork.map((m, i) => {
+            const cardAccent = (m as { accent?: string }).accent ?? accent;
+            return (
+              <Reveal key={m.slug} delay={i * 0.08}>
+                <Link
+                  href={`/work/${m.slug}`}
+                  className="group flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 py-5 border-b border-white/[0.07]"
                 >
-                  case study
-                  <Icon name="arrow-up-right" size={13} />
-                </span>
-              </span>
-            </Link>
-          </Reveal>
-        ))}
-      </div>
+                  <div className="flex-1 min-w-0">
+                    {(m as { eyebrow?: string }).eyebrow && (
+                      <p className="text-[10px] font-display tracking-[0.16em] uppercase text-white/35 mb-1.5">
+                        {(m as { eyebrow?: string }).eyebrow}
+                      </p>
+                    )}
+                    <div className="flex items-center gap-3 mb-1.5">
+                      <span className="font-display text-lg text-white font-medium">{m.title}</span>
+                      {(m as { liveUrl?: string }).liveUrl && (
+                        <span
+                          className="text-[10px] font-display tracking-[0.12em] uppercase px-2 py-0.5 rounded-full border"
+                          style={{ color: cardAccent, borderColor: `${cardAccent}44`, background: `${cardAccent}11` }}
+                        >
+                          live
+                        </span>
+                      )}
+                    </div>
+                    {(m as { description?: string }).description && (
+                      <p className="text-[13px] leading-[1.55] text-white/55 max-w-[520px]">
+                        {(m as { description?: string }).description}
+                      </p>
+                    )}
+                    <p className="text-[11px] text-white/35 mt-2 tracking-wide">{m.descriptor}</p>
+                  </div>
+                  <span
+                    className="inline-flex items-center gap-1 shrink-0 text-[13px] font-display mt-0.5 transition-transform group-hover:translate-x-0.5"
+                    style={{ color: cardAccent }}
+                  >
+                    case study
+                    <Icon name="arrow-up-right" size={13} />
+                  </span>
+                </Link>
+              </Reveal>
+            );
+          })}
+        </div>
       </section>
     </Container>
   );
