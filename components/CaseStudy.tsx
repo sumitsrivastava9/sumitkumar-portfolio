@@ -131,13 +131,13 @@ export default function CaseStudyPage({ study }: { study: CaseStudy }) {
               <div className={`grid gap-3 ${study.images.length >= 2 ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1"}`}>
                 {study.images.map((img, i) => (
                   <div key={i} className="flex flex-col gap-2">
-                    <div className="rounded-xl overflow-hidden border border-white/[0.08] bg-white/[0.02]">
+                    <div className="rounded-xl overflow-hidden border border-white/[0.08] bg-white/[0.02] h-[460px]">
                       <Image
                         src={img.src}
                         alt={img.alt}
                         width={1280}
-                        height={800}
-                        className="w-full h-auto object-cover object-top"
+                        height={900}
+                        className="w-full h-full object-cover object-top"
                         priority={i === 0}
                       />
                     </div>
