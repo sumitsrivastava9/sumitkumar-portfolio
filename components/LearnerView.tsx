@@ -172,6 +172,37 @@ function SpotlightCard({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Stack tags. The active build gets accent-tinted tags; shipped and
+// upcoming steps get neutral ones, so the accent stays a signal for
+// "this is the one I'm on today".
+function TagRow({ tags, muted }: { tags: string[]; muted?: boolean }) {
+  return (
+    <div className="flex gap-2 flex-wrap">
+      {tags.map((t) => (
+        <span
+          key={t}
+          className="text-[11px] px-2.5 py-1 rounded-md"
+          style={
+            muted
+              ? {
+                  color: "rgba(255,255,255,0.5)",
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.09)",
+                }
+              : {
+                  color: "#cfcfd6",
+                  background: `${accent}14`,
+                  border: `1px solid ${accent}33`,
+                }
+          }
+        >
+          {t}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function JourneyItem({ step, index }: { step: JourneyStep; index: number }) {
   const reduce = useReducedMotion();
   const isNow = step.state === "now";
@@ -203,28 +234,19 @@ function JourneyItem({ step, index }: { step: JourneyStep; index: number }) {
             <p className="text-[13.5px] leading-[1.6] text-white/70 mb-4">
               {step.detail}
             </p>
-            {step.tags && (
-              <div className="flex gap-2 flex-wrap">
-                {step.tags.map((t) => (
-                  <span
-                    key={t}
-                    className="text-[11px] px-2.5 py-1 rounded-md"
-                    style={{
-                      color: "#cfcfd6",
-                      background: `${accent}14`,
-                      border: `1px solid ${accent}33`,
-                    }}
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            )}
+            {step.tags && <TagRow tags={step.tags} />}
           </SpotlightCard>
         ) : (
-          <p className="text-[13.5px] leading-[1.6] text-white/60 max-w-[560px]">
-            {step.detail}
-          </p>
+          <div className="max-w-[560px]">
+            <p className="text-[13.5px] leading-[1.6] text-white/60">
+              {step.detail}
+            </p>
+            {step.tags && (
+              <div className="mt-3">
+                <TagRow tags={step.tags} muted />
+              </div>
+            )}
+          </div>
         )}
       </div>
     </motion.li>
