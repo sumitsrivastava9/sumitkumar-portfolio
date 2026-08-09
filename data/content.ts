@@ -101,7 +101,7 @@ export const flagship = {
 // Each row links to /work/<slug>; the page copy is in caseStudies.ts.
 export const moreWork = [
   {
-    eyebrow: "Personal project · 2025",
+    eyebrow: "Personal project · 2026",
     title: "MealPilot",
     description: "Food-ordering app with an AI assistant that suggests real dishes from the live menu — you describe what you feel like, it picks from what's actually available.",
     descriptor: "Next.js · Redux Toolkit · Claude API · Live demo",
@@ -120,9 +120,10 @@ export const skills = {
   },
   growing: {
     label: "Growing · Backend & full-stack",
-    note: "actively upskilling toward full stack",
-    // Backed by the builds listed on the learner page.
-    items: ["Node.js", "Express", "PostgreSQL", "REST APIs"],
+    note: "fundamentals in place, building with them now",
+    // Backed by the builds listed on the learner page. Claude API is
+    // backed by MealPilot's server route (live, with a case study).
+    items: ["Node.js", "Express", "PostgreSQL", "REST APIs", "Claude API"],
   },
 };
 
@@ -146,9 +147,9 @@ export const learner = {
     "I'm a frontend engineer deliberately becoming a full-stack one. This page tracks that move as it happens: what I'm building, what I got wrong, and what I'd tell past-me.",
   // Typewriter under the intro. Only things actually on the bench.
   cycle: [
-    "a task manager, built twice",
-    "Express, PostgreSQL and JWT auth",
-    "a second take on SST v3 + AWS",
+    "Node, Express, PostgreSQL, REST",
+    "now building full-stack, end to end",
+    "Namaste AI from 15 August",
     "writing up every mistake",
   ],
   journeyLabel: "the journey",
@@ -160,18 +161,25 @@ export const learner = {
         "Three years of React, Next.js and TypeScript across 10+ live apps. The foundation the rest builds on.",
     },
     {
-      state: "now",
-      title: "Task manager, full-stack",
+      state: "done",
+      title: "Backend fundamentals",
       detail:
-        "A REST API in Node and Express with PostgreSQL and JWT auth, plus a React frontend on top. Hand-rolling the pieces frameworks usually hide.",
-      tags: ["Express", "PostgreSQL", "JWT", "React"],
+        "Worked through the server side properly: Node and Express for routing and middleware, PostgreSQL for schema design and queries, and REST API design end to end. The fundamentals are in place. What I build with them is the proof.",
+      tags: ["Node.js", "Express", "PostgreSQL", "REST APIs"],
     },
     {
       state: "now",
-      title: "Task manager, serverless",
+      title: "Building full-stack",
       detail:
-        "The same product rebuilt on SST v3 on AWS, to feel where serverless helps and where it fights you.",
-      tags: ["SST v3", "AWS", "Serverless"],
+        "Turning those fundamentals into shipped products: apps I own end to end, from the Postgres schema through the API to the React frontend. Hand-rolling the pieces frameworks usually hide.",
+      tags: ["Node.js", "Express", "PostgreSQL", "React", "Next.js"],
+    },
+    {
+      state: "next",
+      title: "AI engineering",
+      detail:
+        "Namaste AI (Akshay Saini), starting 15 August 2026. MealPilot already ships a Claude-backed feature I can defend line by line; the goal is to make that a repeatable skill rather than a one-off, and fold it into the full-stack work.",
+      tags: ["LLM APIs", "Prompt design", "Retrieval"],
     },
     {
       state: "next",
@@ -183,22 +191,22 @@ export const learner = {
       state: "next",
       title: "Full-stack in production",
       detail:
-        "Fold the backend skills back into client work and ship end to end.",
+        "Fold the backend and AI work back into client projects and ship end to end, not just in side projects.",
     },
   ] as JourneyStep[],
   topicsLabel: "on the bench right now",
   // Ticker content: topics being learned, not skill claims.
   topics: [
     "REST API design",
-    "Express middleware",
     "PostgreSQL schemas",
-    "JWT auth flows",
-    "SST v3",
-    "AWS Lambda",
-    "cold starts",
-    "DB migrations",
+    "Express middleware",
+    "auth flows",
     "input validation",
     "error handling",
+    "DB migrations",
+    "query performance",
+    "deploying a Node API",
+    "wiring React to my own API",
   ],
 };
 
