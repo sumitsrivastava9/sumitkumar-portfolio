@@ -52,7 +52,7 @@ const personJsonLd = {
   jobTitle: profile.role,
   email: `mailto:${profile.email}`,
   url: siteUrl,
-  sameAs: [profile.linkedin],
+  sameAs: [profile.linkedin, profile.github],
   worksFor: { "@type": "Organization", name: "Studio Graphene" },
   address: {
     "@type": "PostalAddress",

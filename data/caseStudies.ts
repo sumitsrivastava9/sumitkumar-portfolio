@@ -25,6 +25,10 @@ export type CaseStudy = {
   liveUrl?: string;
   image?: { src: string; alt: string; caption?: string };
   images?: { src: string; alt: string; label?: string }[];
+  // Renders a bespoke interactive component inside the page, keyed by id.
+  // "pulse-optimizer" = the labelled before/after reconstruction widget.
+  // "mealpilot-embed" = the live app in an inline frame.
+  widget?: "pulse-optimizer" | "mealpilot-embed";
 };
 
 export const caseStudies: CaseStudy[] = [
@@ -45,6 +49,7 @@ export const caseStudies: CaseStudy[] = [
       { value: "~45%", label: "fewer re-renders" },
       { value: "Daily", label: "use by delivery teams" },
     ],
+    widget: "pulse-optimizer",
     video: {
       src: "/walkthrough.mp4",
       poster: "/walkthrough-poster.jpg",
@@ -90,6 +95,16 @@ export const caseStudies: CaseStudy[] = [
         heading: "Tradeoffs",
         paragraphs: [
           "Caching and context splitting add real complexity. A staleness window is a product decision as much as a technical one: you are choosing how out-of-date each kind of data is allowed to be. Cache invalidation and a more fragmented state tree are genuinely harder to reason about than fetch-on-render. I accepted that overhead because the responsiveness gains were measurable and the dashboard is used every day.",
+        ],
+      },
+      // TODO(sumit): attach the scrubbed evidence for the numbers below —
+      // a network-waterfall (redundant calls before vs after) and a
+      // React Profiler render-count capture — via the `images` field, and
+      // name the exact tools you used in the paragraph here.
+      {
+        heading: "How I verified it",
+        paragraphs: [
+          "The numbers come from comparing the same scenario before and after the change, not from an estimate: a fixed set of navigations between a metric and its breakdown, and a single state update, run both ways. I measured how many requests the app fired and how many components re-rendered in each case, held the scenario constant, and read the difference. The widget above is a labelled reconstruction of that same before/after on synthetic data, so you can see the mechanism rather than take the result on trust.",
         ],
       },
       {
@@ -178,6 +193,13 @@ export const caseStudies: CaseStudy[] = [
     ],
     tags: ["Next.js", "TypeScript", "Redux Toolkit", "Claude API", "Tailwind CSS"],
     liveUrl: "https://mealpilot-murex.vercel.app/",
+    // Live app embedded inline so the AI feature is exercisable on the
+    // page, not just linked. The public deploy is key-free (rule-based
+    // demo mode), so it fails safe.
+    // TODO(sumit): publish the eval script's actual accuracy figure in the
+    // "Impact" section above (it currently says a score exists but not
+    // what it is).
+    widget: "mealpilot-embed",
     images: [
       {
         src: "/1stmealpilot.png",
