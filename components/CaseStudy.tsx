@@ -9,6 +9,7 @@ import { caseStudies } from "@/data/caseStudies";
 import { profile } from "@/data/content";
 import { exitToGate } from "@/lib/profile";
 import Icon from "./Icon";
+import PulseOptimizer from "./PulseOptimizer";
 import { Container, PageRise, SectionLabel, Contact } from "./Sections";
 
 // Slim header for /work pages: same silhouette as Nav, but instead of
@@ -24,7 +25,13 @@ function WorkNav() {
   }, []);
 
   return (
-    <nav className="border-b border-white/[0.06]">
+    <nav className="relative border-b border-white/[0.06]">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-3 focus:left-3 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-white focus:text-black focus:text-[13px] focus:font-medium focus:font-display"
+      >
+        Skip to content
+      </a>
       <div className="w-full max-w-[1080px] mx-auto px-6 sm:px-8 py-5 flex justify-between items-center">
         <button
           onClick={exitToGate}
@@ -149,7 +156,7 @@ export default function CaseStudyPage({ study }: { study: CaseStudy }) {
                   </div>
                 ))}
               </div>
-              <p className="mt-3 text-[11px] text-white/40 text-center">
+              <p className="mt-3 text-[11px] text-white/55 text-center">
                 Live demo · no API key required · AI runs in rule-based demo mode
               </p>
             </section>
@@ -192,6 +199,48 @@ export default function CaseStudyPage({ study }: { study: CaseStudy }) {
               ))}
             </div>
           </section>
+
+          {study.widget === "pulse-optimizer" && (
+            <section className="pb-12">
+              <SectionLabel>see it move</SectionLabel>
+              <PulseOptimizer accent={accent} />
+            </section>
+          )}
+
+          {study.widget === "mealpilot-embed" && study.liveUrl && (
+            <section className="pb-12">
+              <SectionLabel>try it live</SectionLabel>
+              <div className="rounded-xl overflow-hidden border border-white/[0.08] bg-ink-soft">
+                <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-white/[0.08]">
+                  <span className="text-[12px] text-white/60 font-display">
+                    Live app · AI in key-free demo mode
+                  </span>
+                  <a
+                    href={study.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[12px] font-display inline-flex items-center gap-1"
+                    style={{ color: accent }}
+                  >
+                    Open full screen
+                    <Icon name="arrow-up-right" size={12} />
+                  </a>
+                </div>
+                <iframe
+                  src={study.liveUrl}
+                  title="MealPilot live demo"
+                  loading="lazy"
+                  className="w-full h-[560px] bg-white"
+                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                />
+              </div>
+              <p className="mt-3 text-[12px] text-white/55">
+                Embedded live. Describe what you feel like eating and the assistant
+                suggests real dishes from the menu; it cannot surface a dish that
+                does not exist.
+              </p>
+            </section>
+          )}
 
           <section className="pb-12 space-y-10">
             {study.sections.map((s) => (

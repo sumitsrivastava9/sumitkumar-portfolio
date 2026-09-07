@@ -5,6 +5,8 @@ import {
   ImpactStats,
   FlagshipProject,
   MoreWork,
+  Recognition,
+  Notes,
   Skills,
   Contact,
 } from "@/components/Sections";
@@ -26,6 +28,8 @@ export default function ManagerView() {
         <ImpactStats accent={accent} />
         <FlagshipProject accent={accent} />
         <MoreWork accent={accent} />
+        <Recognition accent={accent} />
+        <Notes accent={accent} />
         <Skills />
         <Contact accent={accent} />
       </PageRise>

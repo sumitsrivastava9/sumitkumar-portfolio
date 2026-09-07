@@ -20,19 +20,42 @@ export default function Nav({ current }: { current: ProfileKey }) {
   }
 
   return (
-    <nav className="border-b border-white/[0.06]">
-      <div className="w-full max-w-[1080px] mx-auto px-6 sm:px-8 py-5 flex justify-between items-center">
+    <nav className="relative border-b border-white/[0.06]">
+      {/* Keyboard users can jump straight past the nav to the content. */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-3 focus:left-3 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-white focus:text-black focus:text-[13px] focus:font-medium focus:font-display"
+      >
+        Skip to content
+      </a>
+      <div className="w-full max-w-[1080px] mx-auto px-6 sm:px-8 py-5 flex justify-between items-center gap-3">
       <button
         onClick={exitToGate}
-        className="text-sm text-white font-medium font-display bg-transparent border-0 cursor-pointer"
+        className="text-sm text-white font-medium font-display bg-transparent border-0 cursor-pointer shrink-0"
       >
         {profile.name.toLowerCase()}
         <span style={{ color }}>.</span>dev
       </button>
 
-      <div className="relative">
+      <div className="flex items-center gap-2 sm:gap-3">
+        {/* Persistent conversion actions, on every long-scroll view. */}
+        <a
+          href={profile.resumeUrl}
+          download
+          className="hidden sm:inline-flex items-center gap-1.5 text-[12px] font-display text-white/80 hover:text-white px-3 py-1.5 rounded-full border border-white/15 transition-colors"
+        >
+          <Icon name="download" size={13} />
+          Résumé
+        </a>
+        <a
+          href={`mailto:${profile.email}`}
+          className="hidden sm:inline-flex items-center text-[12px] font-display text-white/80 hover:text-white px-3 py-1.5 rounded-full border border-white/15 transition-colors"
+        >
+          Email
+        </a>
+        <div className="relative">
         <div className="flex items-center gap-2.5">
-          <span className="text-[11px] text-white/45">viewing as</span>
+          <span className="hidden sm:inline text-[11px] text-white/45">viewing as</span>
           <button
             onClick={() => setOpen((o) => !o)}
             className="flex items-center gap-2 text-xs text-white px-3 py-1.5 rounded-full cursor-pointer"
@@ -70,6 +93,7 @@ export default function Nav({ current }: { current: ProfileKey }) {
             </motion.div>
           )}
         </AnimatePresence>
+      </div>
       </div>
       </div>
     </nav>

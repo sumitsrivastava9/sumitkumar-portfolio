@@ -8,8 +8,12 @@ export const profile = {
   name: "Sumit",
   domainLabel: "sumit.dev",
   role: "Frontend Engineer",
+  // TODO(sumit): move to a branded address once the domain resolves
+  // (e.g. hi@sumit.dev). A numbered gmail under a "sumit.dev" wordmark
+  // reads off-brand on a proof-first site.
   email: "sumkumar723@gmail.com",
   linkedin: "https://www.linkedin.com/in/sumit-frontend/",
+  github: "https://github.com/sumitsrivastava9",
   resumeUrl: "/resume.pdf",
 };
 
@@ -37,13 +41,18 @@ export const gateProfiles: {
 ];
 
 // ---- Hero ----
+// One ownable thesis, not a generic tagline: the specialism (data-heavy
+// UI performance) sits in the headline; the defensible-AI half and the
+// two real Pulse numbers sit in the subtitle. Phrased so every word is
+// interview-defensible today. Shared verbatim by the manager and
+// recruiter views so the positioning is identical wherever they land.
 export const hero = {
   eyebrow: "for hiring managers",
-  lineTop: "I build interfaces",
-  lineBottomLead: "that ",
-  lineBottomAccent: "ship.",
+  lineTop: "I make data-heavy",
+  lineBottomLead: "products ",
+  lineBottomAccent: "fast.",
   subtitle:
-    "Sole frontend engineer at a product studio. Three years shipping React, Next.js and TypeScript across 10+ live SaaS apps. Here's the proof, fast.",
+    "Frontend engineer at a product studio. On Pulse, an engineering-analytics platform, I cut redundant API calls by ~50% and re-renders by ~45%. I also ship AI features I can defend line by line, like a menu assistant that can't invent a dish.",
 };
 
 // ---- Hero snapshot card (HIRING MANAGER) ----
@@ -62,11 +71,21 @@ export const heroSnapshot = {
 };
 
 // ---- Impact stats (HIRING MANAGER) ----
-// All three are drawn straight from the resume and defensible in an
-// interview. Keep it that way; fewer real stats beat more fluffy ones.
+// Fewer real stats beat more fluffy ones. Two of these are absolute
+// claims a skeptical reviewer will probe, so each is scoped to what is
+// genuinely defensible.
+// TODO(sumit) — before going public, make each counter fully defensible:
+//   1. "40%": state the method + baseline you can produce in interview
+//      (measured as X against Y), or replace with another real number.
+//   2. "0 critical bugs": only keep the absolute if you can point to a
+//      real tracked source (e.g. no P1 incidents attributable to your
+//      frontend across N releases, tracked in Jira). Never swap in
+//      credible-sounding phrasing without an actual source.
+//   3. "10+ apps": the roster below should make this count inspectable;
+//      if the honest count is lower, state the real number here.
 export const stats = [
   { value: "40", unit: "%", label: "faster feature delivery via a 50+ component design system" },
-  { value: "0", unit: "critical bugs", label: "across every client production deployment" },
+  { value: "0", unit: "critical bugs", label: "in the client frontends I shipped to production" },
   { value: "10", unit: "+ apps", label: "shipped across SaaS, AI and analytics products" },
 ];
 
@@ -97,17 +116,56 @@ export const flagship = {
   tags: ["React", "Next.js", "TypeScript", "React Query", "Redux Toolkit"],
 };
 
-// ---- Secondary projects ----
-// Each row links to /work/<slug>; the page copy is in caseStudies.ts.
-export const moreWork = [
+// ---- Apps roster ----
+// Makes the "10+ apps" claim inspectable: each entry names the app, the
+// role Sumit actually held, its status, and (where known) the stack. A
+// `slug` links to a full case study; without one it renders as a static
+// roster row. Typed so no `as` casts are needed at the call site.
+// TODO(sumit): fill the stack for Form1/Mimentor and add any other apps
+// you genuinely owned (with real role + status). Do not pad this list —
+// if the honest total is under ten, change the "10+" stat accordingly.
+export type MoreWorkItem = {
+  title: string;
+  role: string;
+  status: string;
+  descriptor: string; // stack or a short context line
+  description?: string;
+  eyebrow?: string;
+  slug?: string; // links to /work/<slug> when a full case study exists
+  liveUrl?: string;
+  accent?: string;
+};
+
+export const moreWork: MoreWorkItem[] = [
   {
     eyebrow: "Personal project · 2026",
     title: "MealPilot",
-    description: "Food-ordering app with an AI assistant that suggests real dishes from the live menu — you describe what you feel like, it picks from what's actually available.",
-    descriptor: "Next.js · Redux Toolkit · Claude API · Live demo",
+    role: "Sole engineer",
+    status: "Live",
+    description:
+      "Food-ordering app with an AI assistant that suggests real dishes from the live menu. You describe what you feel like; it picks from what's actually available, and it cannot surface a dish that does not exist.",
+    descriptor: "Next.js · Redux Toolkit · Claude API",
     slug: "mealpilot",
     liveUrl: "https://mealpilot-murex.vercel.app/",
     accent: "#FF6B35",
+  },
+  {
+    eyebrow: "Studio Graphene",
+    title: "Form1",
+    role: "Frontend engineer",
+    status: "Shipped",
+    description:
+      "Frontend work across the platform, including a complex update-search fix that both a project lead and the CTO called out (see Recognition below).",
+    descriptor: "Client platform · Studio Graphene",
+  },
+  {
+    eyebrow: "Studio Graphene · first project",
+    title: "Mimentor",
+    role: "Frontend engineer",
+    status: "Shipped",
+    description:
+      "My first project at Studio Graphene. The project lead reported it shipped flawlessly, with no issues encountered in production.",
+    descriptor: "Client platform · Studio Graphene",
   },
 ];
 
@@ -119,8 +177,11 @@ export const skills = {
     items: ["React", "Next.js", "TypeScript", "Redux Toolkit", "React Query", "Tailwind CSS", "Jest"],
   },
   growing: {
-    label: "Growing · Backend & full-stack",
-    note: "fundamentals in place, building with them now",
+    // De-hedged: for a targeted frontend role the backend is a supporting
+    // strength, not a competing second track. Framed as "enough to be a
+    // strong frontend partner" so it never dilutes the core claim.
+    label: "Also · Backend",
+    note: "enough Node, Express and Postgres to be a strong frontend partner",
     // Backed by the builds listed on the learner page. Claude API is
     // backed by MealPilot's server route (live, with a case study).
     items: ["Node.js", "Express", "PostgreSQL", "REST APIs", "Claude API"],
@@ -144,7 +205,7 @@ export const learner = {
   eyebrow: "for learners",
   heading: "Learning in public",
   intro:
-    "I'm a frontend engineer deliberately becoming a full-stack one. This page tracks that move as it happens: what I'm building, what I got wrong, and what I'd tell past-me.",
+    "I'm a frontend engineer deepening into the backend so I can own features end to end. This page tracks that as it happens: what I'm building, what I got wrong, and what I'd tell past-me.",
   // Typewriter under the intro. Only things actually on the bench.
   cycle: [
     "Node, Express, PostgreSQL, REST",
@@ -231,3 +292,82 @@ export const recruiterCycle = [
   "10+ production apps shipped",
   "Open to new roles",
 ];
+
+// ---- Recognition ----
+// Real Nectar shoutouts from colleagues at Studio Graphene. Same ethos
+// as the rest of the site: named people, real quotes, defensible.
+// NOTE(sumit): the three aggregate numbers below (recognitions,
+// colleagues, span) must match what your Nectar profile actually shows.
+// Confirm them before this ships, or swap them for numbers you can point
+// to in the interview. The quotes themselves are verbatim.
+export type Shoutout = {
+  quote: string;
+  name: string;
+  role: string;
+  tag: string;
+  date: string;
+  points?: string; // Nectar points awarded, e.g. "+50"
+};
+
+export const recognition = {
+  eyebrow: "recognition",
+  heading: "The people I've shipped with, on the record.",
+  intro:
+    "Studio Graphene runs peer recognition through Nectar: colleagues post public shoutouts and award points. A selection below, from leadership to project leads, 2024 to 2026.",
+  // Accent count-up strip. Keep these honest — see NOTE above.
+  stats: [
+    { num: 80, suffix: "+", label: "recognitions on Nectar" },
+    { num: 25, suffix: "+", label: "colleagues who've recognised me" },
+    { num: 3, suffix: " yrs", label: "a 2024–26 track record" },
+  ],
+  // The featured shoutout: manager-level, sets the tone.
+  lead: {
+    quote:
+      "Constantly pushing yourself to upskill and dive into the unknown. Your relentless curiosity and willingness to take smart risks to expand your knowledge inspire the whole team.",
+    name: "Joao",
+    role: "Manager, Studio Graphene",
+    tag: "Upskilling",
+    date: "Jul 2026",
+    points: "+50",
+  } as Shoutout,
+  // Supporting shoutouts across CTO, leads and a PM.
+  entries: [
+    {
+      quote:
+        "Really commendable work. Thank you for turning things around so quickly and showing agility along the way. It's a pleasure working alongside you.",
+      name: "Atul Sharma",
+      role: "CTO, Studio Graphene",
+      tag: "Form1",
+      date: "Sep 2025",
+    },
+    {
+      quote:
+        "Thank you for helping fix the update-search frontend issue. It was a complex piece of logic, and I appreciate you stepping up to understand and resolve it so quickly.",
+      name: "Harish",
+      role: "Lead, Form1",
+      tag: "Form1",
+      date: "Aug 2025",
+      points: "+14",
+    },
+    {
+      quote:
+        "His work on Mimentor, which was also his first project, has been flawless. We haven't encountered any issues so far. Thank you for your outstanding work.",
+      name: "Anand",
+      role: "Lead, Mimentor",
+      tag: "Mimentor",
+      date: "May 2024",
+      points: "+10",
+    },
+    {
+      quote:
+        "Making the Pulse platform responsive in addition to the current sprint plan. Balancing this alongside ongoing work takes extra effort.",
+      name: "Arpit Arora",
+      role: "PM, Pulse",
+      tag: "Pulse",
+      date: "Apr 2026",
+      points: "+20",
+    },
+  ] as Shoutout[],
+  footnote:
+    "Every quote is a real Nectar shoutout from a colleague at Studio Graphene. Points are the recognition the platform awarded.",
+};

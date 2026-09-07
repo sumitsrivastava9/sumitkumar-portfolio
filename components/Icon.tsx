@@ -71,6 +71,12 @@ const paths: Record<string, React.ReactNode> = {
     </>
   ),
   check: <path d="m5 13 4 4L19 7" />,
+  quote: (
+    <g fill="currentColor" stroke="none">
+      <path d="M9.5 6C6.9 6 5 8 5 10.6c0 2.4 1.7 4.2 4 4.2.3 0 .6 0 .9-.1-.5 2-2.2 3.4-4.2 3.6l.3 1.7C9.4 19.5 12 16.4 12 12V10.6C12 8 11.2 6 9.5 6z" />
+      <path d="M18.5 6C15.9 6 14 8 14 10.6c0 2.4 1.7 4.2 4 4.2.3 0 .6 0 .9-.1-.5 2-2.2 3.4-4.2 3.6l.3 1.7C18.4 19.5 21 16.4 21 12V10.6C21 8 20.2 6 18.5 6z" />
+    </g>
+  ),
 };
 
 export default function Icon({ name, size = 20, className = "", style }: IconProps) {
